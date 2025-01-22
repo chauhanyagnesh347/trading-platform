@@ -1,18 +1,19 @@
 package org.com.model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.com.database.StockDatabase.findStock;
+import static org.com.model.User.TransactionType.BUY;
+import static org.com.model.User.TransactionType.SELL;
+import static org.com.service.TradingPlatformService.getTimeStamp;
 import static org.com.service.TradingPlatformService.getTimeTick;
 
 public class User {
 
     public String userName;
     private Double walletBalance;
-//    List<Transaction> transactionHistory;
+    List<Transaction> transactionHistory;
 //    Map<String, Map<String, Holdings>> portfolio;
     private Map<String, Holdings> portfolio;
 
@@ -20,6 +21,7 @@ public class User {
     public User(String userName, Double walletBalance) {
         this.userName = userName;
         this.walletBalance = walletBalance;
+        transactionHistory = new ArrayList<>();
         portfolio = new HashMap<>();
     }
 
@@ -51,6 +53,7 @@ public class User {
             case BUY:
                 this.walletBalance-=txnAmount;
                 portfolio.computeIfAbsent(stockName, v -> new Holdings(0L, stock.getStockPrice())).addQuantity(quantity);
+                transactionHistory.add(new Transaction(BUY, stockName, quantity, stock.getStockPrice(), getTimeStamp()));
                 /*if(portfolio.containsKey(stockName)) {
                     Map<String, Holdings> currHolding = portfolio.get(stockName);
                     String timeStamp = "t"+getTimeTick().toString();
@@ -60,6 +63,7 @@ public class User {
             case SELL:
                 this.walletBalance+=txnAmount;
                 portfolio.get(stockName).addQuantity(-1L*quantity);
+                transactionHistory.add(new Transaction(SELL, stockName, quantity, stock.getStockPrice(), getTimeStamp()));
                 break;
             default:
                 break;

@@ -57,4 +57,8 @@ public class TradingPlatformService {
     public static Integer getTimeTick() {
         return timeTick;
     }
+
+    public static String getTimeStamp() {
+        return "t"+timeTick.toString();
+    }
 }
