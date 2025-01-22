@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.com.model.Stock;
 import org.com.model.User;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.com.database.StockDatabase.findStock;
@@ -59,10 +60,19 @@ public class UserService {
         displayPortfolioForUser(user);
     }
 
+    public void viewTransactionHistory(String userName) {
+        User user = findUser(userName);
+        log.info("Transaction history: {}", userName);
+        List<User.Transaction> txnHistory = user.getTransactionHistory();
+        for(User.Transaction txn:txnHistory) {
+            log.info("{}", txn.toString());
+        }
+    }
+
     private void displayPortfolioForUser(User user) {
         log.info("Wallet Balance: {}", user.getWalletBalance().toString());
         Map<String, User.Holdings> portfolio = user.getPortfolio();
-        log.info("Stocks:");
+        log.info("Stocks:- ");
         portfolio.forEach((k, v) -> {
             log.info("{}, {}", k, v.getQty());
         });

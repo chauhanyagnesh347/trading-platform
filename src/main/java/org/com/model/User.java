@@ -3,6 +3,7 @@ package org.com.model;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static java.lang.String.format;
 import static org.com.database.StockDatabase.findStock;
 import static org.com.model.User.TransactionType.BUY;
 import static org.com.model.User.TransactionType.SELL;
@@ -13,7 +14,7 @@ public class User {
 
     public String userName;
     private Double walletBalance;
-    List<Transaction> transactionHistory;
+    private List<Transaction> transactionHistory;
 //    Map<String, Map<String, Holdings>> portfolio;
     private Map<String, Holdings> portfolio;
 
@@ -43,6 +44,10 @@ public class User {
 
     public Map<String, Holdings> getPortfolio() {
         return new HashMap<>(this.portfolio);
+    }
+
+    public List<Transaction> getTransactionHistory() {
+        return new ArrayList<>(transactionHistory);
     }
 
     public void updateHoldings(String stockName, Long quantity, String activity) {
@@ -102,6 +107,11 @@ public class User {
         Long qty;
         Double price;
         String time;
+
+        @Override
+        public String toString() {
+            return format("[ %s, %s, %s, %s, %s ]", txnType, stockName, qty.toString(), price.toString(), time);
+        }
     }
 
     public enum TransactionType {

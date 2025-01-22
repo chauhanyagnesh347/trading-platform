@@ -26,7 +26,9 @@ public class StockDatabase {
     }
 
     public static Stock findStock(String stockName) {
-        return stocks.get(stockName);
+        if (stocks.containsKey(stockName))
+            return stocks.get(stockName);
+        throw new IllegalArgumentException("Stock " + stockName + " not found.");
     }
 
     public static List<Stock> getAllStocks() {

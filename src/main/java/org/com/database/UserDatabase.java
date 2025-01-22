@@ -22,8 +22,11 @@ public class UserDatabase {
     }
 
     public static User findUser(String userName) {
-        return userData.get(userName);
+        if (userData.containsKey(userName))
+            return userData.get(userName);
+        throw new IllegalArgumentException("User " + userName + " not found");
     }
+
     public static void updateUser(User user) {
         insertUser(user);
     }

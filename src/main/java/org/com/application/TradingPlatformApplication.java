@@ -30,6 +30,8 @@ public class TradingPlatformApplication {
             String[] parsedCommand = commandLine.trim().split("\\(");
             String command = parsedCommand[0].trim();
             try{
+                if(command.equals(""))
+                    throw new IllegalArgumentException("Emtpy command.");
                 String[] secondaryCommand = parsedCommand[1].trim().split("\\)");
                 String[] arguments;
                 switch(command) {
@@ -62,6 +64,10 @@ public class TradingPlatformApplication {
                     case "VIEW_PORTFOLIO":
                         arguments = secondaryCommand[0].trim().split(",");
                         userService.viewPortfolio(arguments[0].trim());
+                        break;
+                    case "VIEW_TRANSACTION_HISTORY":
+                        arguments = secondaryCommand[0].trim().split(",");
+                        userService.viewTransactionHistory(arguments[0].trim());
                         break;
                     default:
                         throw new IllegalArgumentException("No such command: " + command);
