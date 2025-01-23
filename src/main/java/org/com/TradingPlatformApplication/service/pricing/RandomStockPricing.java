@@ -1,24 +1,30 @@
-package org.com.service;
+package org.com.TradingPlatformApplication.service.pricing;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.com.model.Stock;
+import org.com.TradingPlatformApplication.database.StockDao;
+import org.com.TradingPlatformApplication.model.Stock;
 
 import java.util.List;
 import java.util.Random;
 
-import static org.com.database.StockDatabase.getAllStocks;
+//import static org.com.TradingPlatformApplication.database.StockDao.getAllStocks;
 
 @Slf4j
 public class RandomStockPricing implements StockPricing {
 
     private static final Logger log = LogManager.getLogger(RandomStockPricing.class);
-    private static Random random = new Random();
+    private static final Random random = new Random();
+    private StockDao stockDao;
+
+    public RandomStockPricing(StockDao stockDao) {
+        this.stockDao = stockDao;
+    }
 
     @Override
     public void updateStockPrice() {
-        List<Stock> currentStocks = getAllStocks();
+        List<Stock> currentStocks = stockDao.getAllStocks();
         currentStocks.forEach(s -> {
             s.setStockPrice(newStockPrice(s.getStockPrice()));
         });

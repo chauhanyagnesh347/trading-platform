@@ -1,16 +1,18 @@
-package org.com.application;
+package org.com.TradingPlatformApplication.application;
 
-import jdk.nashorn.internal.runtime.regexp.joni.constants.internal.Arguments;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.com.service.TradingPlatformService;
-import org.com.service.UserService;
+import org.com.TradingPlatformApplication.database.StockDao;
+import org.com.TradingPlatformApplication.database.TransactionDao;
+import org.com.TradingPlatformApplication.database.UserDao;
+import org.com.TradingPlatformApplication.service.StockService;
+import org.com.TradingPlatformApplication.service.TradingPlatformService;
+import org.com.TradingPlatformApplication.service.TransactionService;
+import org.com.TradingPlatformApplication.service.UserService;
 
 import java.util.Scanner;
 
-import static org.com.database.StockDatabase.initStockData;
-import static org.com.database.UserDatabase.initUserData;
 
 @Slf4j
 public class TradingPlatformApplication {
@@ -20,10 +22,16 @@ public class TradingPlatformApplication {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        TradingPlatformService tradingService = new TradingPlatformService();
-        UserService userService = new UserService();
-        initUserData();
-        initStockData();
+        StockDao stockDao = new StockDao();
+        stockDao.initStockData();
+        UserDao userDao = new UserDao();
+        userDao.initUserData();
+        TransactionDao transactionDao = new TransactionDao();
+        transactionDao.initTransactionData();
+        TradingPlatformService tradingService = new TradingPlatformService(stockDao);
+        UserService userService = new UserService(userDao);
+        TransactionService transactionService = new TransactionService(transactionDao);
+        StockService stockService = new StockService(stockDao);
 
         while(true) {
             String commandLine = scanner.nextLine();
@@ -37,7 +45,7 @@ public class TradingPlatformApplication {
                 switch(command) {
                     case "ADD_STOCKS":
                         arguments = secondaryCommand[0].split(",");
-                        tradingService.addStock(arguments[0].trim(),Double.valueOf(arguments[1].trim()));
+                        stockService.addStock(arguments[0].trim(),Double.valueOf(arguments[1].trim()));
                         break;
                     case "CREATE_USER":
                         arguments = secondaryCommand[0].trim().split(",");
@@ -47,19 +55,19 @@ public class TradingPlatformApplication {
                         tradingService.moveTime();
                         break;
                     case "LIST_ALL_MARKET_STOCK_PRICES":
-                        tradingService.listAllPrices();
+                        stockService.listAllPrices();
                         break;
                     case "GET_STOCK_PRICE":
                         arguments = secondaryCommand[0].trim().split(",");
-                        tradingService.getPriceFor(arguments[0].trim());
+                        stockService.getPriceFor(arguments[0].trim());
                         break;
                     case "BUY_STOCK":
                         arguments = secondaryCommand[0].trim().split(",");
-                        userService.buyStock(arguments[0].trim(), arguments[1].trim(), Long.valueOf(arguments[2].trim()));
+                        transactionService.buyStock(userDao.findUser(arguments[0].trim()), stockDao.findStock(arguments[1].trim()), Long.valueOf(arguments[2].trim()));
                         break;
                     case "SELL_STOCK":
                         arguments = secondaryCommand[0].trim().split(",");
-                        userService.sellStock(arguments[0].trim(), arguments[1].trim(), Long.valueOf(arguments[2].trim()));
+                        transactionService.sellStock(userDao.findUser(arguments[0].trim()), stockDao.findStock(arguments[1].trim()), Long.valueOf(arguments[2].trim()));
                         break;
                     case "VIEW_PORTFOLIO":
                         arguments = secondaryCommand[0].trim().split(",");
@@ -67,7 +75,7 @@ public class TradingPlatformApplication {
                         break;
                     case "VIEW_TRANSACTION_HISTORY":
                         arguments = secondaryCommand[0].trim().split(",");
-                        userService.viewTransactionHistory(arguments[0].trim());
+                        transactionService.viewTransactionHistory(userDao.findUser(arguments[0].trim()));
                         break;
                     default:
                         throw new IllegalArgumentException("No such command: " + command);

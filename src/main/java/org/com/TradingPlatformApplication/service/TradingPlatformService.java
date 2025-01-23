@@ -1,12 +1,13 @@
-package org.com.service;
+package org.com.TradingPlatformApplication.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.com.model.Stock;
+import org.com.TradingPlatformApplication.database.StockDao;
+import org.com.TradingPlatformApplication.model.Stock;
+import org.com.TradingPlatformApplication.service.pricing.RandomStockPricing;
+import org.com.TradingPlatformApplication.service.pricing.StockPricing;
 
 import java.util.List;
-
-import static org.com.database.StockDatabase.*;
 
 public class TradingPlatformService {
 
@@ -15,18 +16,13 @@ public class TradingPlatformService {
     private static final Integer workingHour = 10;
     private StockPricing pricingStretagy;
 
-    public TradingPlatformService() {
+    public TradingPlatformService(StockDao stockDao) {
         timeTick=0;
-        pricingStretagy = new RandomStockPricing();
+        pricingStretagy = new RandomStockPricing(stockDao);
     }
 
     public static void resetTime() {
         timeTick=0;
-    }
-
-    public void addStock(String name, Double price) {
-        Stock stock = new Stock(name, price);
-        insertStock(stock);
     }
 
     public void moveTime() {
@@ -36,18 +32,6 @@ public class TradingPlatformService {
             log.info("Current timestamp: t{}", timeTick);
         }
         else throw new RuntimeException("Market already closed");
-    }
-
-    public void listAllPrices() {
-        List<Stock> allStocks = getAllStocks();
-        allStocks.forEach(stk -> {
-            log.info("{}: {}", stk.getStockName(), stk.getStockPrice());
-        });
-    }
-
-    public void getPriceFor(String stockName) {
-        Stock stk = findStock(stockName);
-        log.info("{}", stk.getStockPrice());
     }
 
     public static Boolean isMarketOpen() {

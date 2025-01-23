@@ -1,41 +1,40 @@
-package org.com.database;
+package org.com.TradingPlatformApplication.database;
 
-import org.com.model.Stock;
+import org.com.TradingPlatformApplication.model.Stock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class StockDatabase {
+public class StockDao {
 
-    private static Map<String, Stock> stocks = new HashMap<>();
+    private final Map<String, Stock> stocks = new HashMap<>();
 
-    public static void initStockData() {
+    public void initStockData() {
         stocks.clear();
     }
 
     //TODO: put existance checks
-    public static void insertStock(Stock stock) {
+    public void insertStock(Stock stock) {
         stocks.put(stock.getStockName(), stock);
     }
 
-    public static void deleteStock(String stockName) {
+    public  void deleteStock(String stockName) {
         stocks.remove(stockName);
     }
 
-    public static Stock findStock(String stockName) {
+    public  Stock findStock(String stockName) {
         if (stocks.containsKey(stockName))
             return stocks.get(stockName);
         throw new IllegalArgumentException("Stock " + stockName + " not found.");
     }
 
-    public static List<Stock> getAllStocks() {
+    public  List<Stock> getAllStocks() {
         return new ArrayList<>(stocks.values());
     }
 
-    public static void updateStock(Stock stock) {
+    public  void updateStock(Stock stock) {
         insertStock(stock);
     }
 

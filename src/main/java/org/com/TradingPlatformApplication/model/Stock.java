@@ -1,4 +1,4 @@
-package org.com.model;
+package org.com.TradingPlatformApplication.model;
 
 import java.util.Map;
 import java.util.TreeMap;
