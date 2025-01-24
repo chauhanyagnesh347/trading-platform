@@ -3,12 +3,12 @@ package org.com.TradingPlatformApplication.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.com.TradingPlatformApplication.database.TransactionDao;
+import org.com.TradingPlatformApplication.factory.holding.BuyHoldingExecutor;
+import org.com.TradingPlatformApplication.factory.holding.HoldingExecutorFactory;
+import org.com.TradingPlatformApplication.factory.holding.SellHoldingExecutor;
 import org.com.TradingPlatformApplication.model.Stock;
 import org.com.TradingPlatformApplication.model.Transaction;
 import org.com.TradingPlatformApplication.model.User;
-import org.com.TradingPlatformApplication.service.holding.BuyHoldingExecutor;
-import org.com.TradingPlatformApplication.service.holding.HoldingExecutorFactory;
-import org.com.TradingPlatformApplication.service.holding.SellHoldingExecutor;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class TransactionService {
     public void viewTransactionHistory(User user) {
         log.info("Transaction history: {}", user.getUserName());
         List<Transaction> txnHistory = transactionDao.findTransactions(user.getUserName());
-        for(Transaction txn:txnHistory) {
+        for (Transaction txn : txnHistory) {
             log.info("{}", txn.toString());
         }
     }

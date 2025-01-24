@@ -1,4 +1,4 @@
-package org.com.TradingPlatformApplication.service.holding;
+package org.com.TradingPlatformApplication.factory.holding;
 
 import org.com.TradingPlatformApplication.enums.TransactionType;
 

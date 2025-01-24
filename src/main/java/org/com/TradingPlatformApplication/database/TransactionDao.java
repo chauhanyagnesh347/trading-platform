@@ -19,7 +19,7 @@ public class TransactionDao {
 
     public void insertTransaction(Transaction txn) {
         transactionData.add(txn);
-        transactionIndex.computeIfAbsent(txn.getUserName(),v -> new ArrayList<>()).add(txn);
+        transactionIndex.computeIfAbsent(txn.getUserName(), v -> new ArrayList<>()).add(txn);
     }
 
     public List<Transaction> findTransactions(String userName) {

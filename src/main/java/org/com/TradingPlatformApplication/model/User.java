@@ -1,15 +1,7 @@
 package org.com.TradingPlatformApplication.model;
 
-import org.com.TradingPlatformApplication.enums.TransactionType;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static org.com.TradingPlatformApplication.enums.TransactionType.BUY;
-import static org.com.TradingPlatformApplication.enums.TransactionType.SELL;
-import static org.com.TradingPlatformApplication.service.TradingPlatformService.getTimeStamp;
 
 public class User {
 

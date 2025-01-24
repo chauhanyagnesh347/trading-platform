@@ -33,19 +33,19 @@ public class TradingPlatformApplication {
         TransactionService transactionService = new TransactionService(transactionDao);
         StockService stockService = new StockService(stockDao);
 
-        while(true) {
+        while (true) {
             String commandLine = scanner.nextLine();
             String[] parsedCommand = commandLine.trim().split("\\(");
             String command = parsedCommand[0].trim();
-            try{
-                if(command.equals(""))
+            try {
+                if (command.equals(""))
                     throw new IllegalArgumentException("Emtpy command.");
                 String[] secondaryCommand = parsedCommand[1].trim().split("\\)");
                 String[] arguments;
-                switch(command) {
+                switch (command) {
                     case "ADD_STOCKS":
                         arguments = secondaryCommand[0].split(",");
-                        stockService.addStock(arguments[0].trim(),Double.valueOf(arguments[1].trim()));
+                        stockService.addStock(arguments[0].trim(), Double.valueOf(arguments[1].trim()));
                         break;
                     case "CREATE_USER":
                         arguments = secondaryCommand[0].trim().split(",");

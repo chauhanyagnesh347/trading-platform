@@ -4,10 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.com.TradingPlatformApplication.database.UserDao;
 import org.com.TradingPlatformApplication.model.Stock;
-import org.com.TradingPlatformApplication.model.Transaction;
 import org.com.TradingPlatformApplication.model.User;
 
-import java.util.List;
 import java.util.Map;
 
 public class UserService {
@@ -17,7 +15,7 @@ public class UserService {
     private final UserDao userDao;
 
     public UserService(UserDao userDao) {
-    this.userDao=userDao;
+        this.userDao = userDao;
     }
 
     public void createUser(String userName, Double initWalletAmount) {
@@ -52,7 +50,7 @@ public class UserService {
             buyNav += (value.getHoldingQty() * value.getBuyingPrice());
             currNav += (value.getHoldingQty() * stock.getStockPrice());
         }
-        if(buyNav.equals(0D))
+        if (buyNav.equals(0D))
             return 0D;
         return (Double) ((currNav - buyNav) * 100) / buyNav;
     }

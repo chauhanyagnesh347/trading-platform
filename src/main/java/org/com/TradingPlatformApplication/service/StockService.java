@@ -13,6 +13,7 @@ public class StockService {
 
     private static final Logger log = LogManager.getLogger(StockService.class);
     private final StockDao stockDao;
+
     public StockService(StockDao stockDao) {
         this.stockDao = stockDao;
     }

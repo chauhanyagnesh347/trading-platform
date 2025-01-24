@@ -1,8 +1,5 @@
 package org.com.TradingPlatformApplication.model;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 public class Stock {
 
     String stockName;
